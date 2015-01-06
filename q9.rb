@@ -19,15 +19,15 @@ def factor_pairs(n)
 end
 
 # return all pythagorean triplets as a nested array given b
-def pythagorean_triplets(b)
+def pythagorean_triplets(side)
 	# a = m^2 - n^2
 	# b = 2mn
 	# c = m^2 + n^2
 
-	if b.even?
-		factor_pairs = factor_pairs(b/2)
+	if side.even?
+		factor_pairs = factor_pairs(side/2)
 	else
-		factor_pairs = factor_pairs(b)
+		factor_pairs = factor_pairs(side)
 	end
 
 	triplets = []
@@ -36,11 +36,15 @@ def pythagorean_triplets(b)
 		m = factor_pair[0]
 		n = factor_pair[1]
 
-		a = b.even? ? m ** 2 - n ** 2 : (m ** 2 - n ** 2)/2
-		c = b.even? ? m ** 2 + n ** 2 : (2 * m * n)/2
-		b = b.even? ? 2 * m * n : (2 * m * n)/2
+		a = m ** 2 - n ** 2
+		c = m ** 2 + n ** 2
+		b = 2 * m * n
 
-		triplets << [a,b,c]
+		if side.even?
+			triplets << [a,b,c]
+		else
+			triplets << [a,b,c].map{|e| e/2}
+		end
 
 	end
 
@@ -55,7 +59,7 @@ def triplet_with_sum(sum)
 
 		triplets.each do |triplet|
 			triplet_sum = triplet.reduce(:+)
-			return triplet if triplet_sum == sum
+			return triplet.sort if triplet_sum == sum
 		end
 	end
 	return nil
