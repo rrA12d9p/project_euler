@@ -7,6 +7,7 @@
 # There exists exactly one Pythagorean triplet for which a + b + c = 1000.
 # Find the product abc.
 
+# returns all factor pairs for n as a nested array
 def factor_pairs(n)
 	factors = [[n, 1]]
 
@@ -17,6 +18,7 @@ def factor_pairs(n)
 	return factors
 end
 
+# return all pyhtagorean triplets as a nested array given b
 def pythagorean_triplets(b)
 	# a = m^2 - n^2
 	# b = 2mn
@@ -46,6 +48,7 @@ def pythagorean_triplets(b)
 
 end
 
+# return the triplet with a specified sum or nil if it doesn't exist
 def triplet_with_sum(sum)
 	sum.times do |i|
 		triplets = pythagorean_triplets(i)
@@ -55,7 +58,15 @@ def triplet_with_sum(sum)
 			return triplet if triplet_sum == sum
 		end
 	end
-	return false
+	return nil
 end
 
-p triplet_with_sum(1000).reduce(:*)
+sum = 1000
+triplet = triplet_with_sum(sum)
+
+if triplet.nil?
+	puts "No triplets exist with a sum of #{sum}"
+else
+	puts "Triplet #{triplet.inspect} has a sum of #{sum}!"
+	puts "Product: #{triplet.reduce(:*)}"
+end
