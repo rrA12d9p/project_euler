@@ -18,7 +18,7 @@ def factor_pairs(n)
 	return factors
 end
 
-# return all pyhtagorean triplets as a nested array given b
+# return all pythagorean triplets as a nested array given b
 def pythagorean_triplets(b)
 	# a = m^2 - n^2
 	# b = 2mn
