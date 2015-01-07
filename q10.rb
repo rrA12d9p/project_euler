@@ -5,20 +5,33 @@
 
 # I'm going to try and do this by hand without the prime class
 
-LIMIT = 10
-CROSS_LIMIT = Math.sqrt(LIMIT).floor
+def primes_up_to(num)
 
-nums = (2...LIMIT).to_a
+	cross_limit = Math.sqrt(num).floor
 
-(0..CROSS_LIMIT).each do |i|
-	nums.select {|num| num == i || num % i != 0}
+	# create a new array with num number of elements, each set as true
+  prime_bools = Array.new(num, true)
 
-p nums
-exit
+  prime_bools.each_with_index do |is_prime, i|
+    # we can stop once our steps are at the square root of the limit
+    break if i >= cross_limit
 
-	# .select {|num| num == 3 || num % 3 != 0} # remove multiples of 3 (above 3)
-	# .select {|num| num == 5 || num % 5 != 0} # remove multiples of 5 (above 5)
+  	# skip first step (0+0+1 steps over everything) and
+  	# non-prime steps, as they're redundant
+    next if i == 0 || !is_prime
 
-sum = nums.reduce(:+)
+    # set each bool we step over to false, starting at i+i+1, which
+    # ensures we keep the first primes true 
+    (i+i+1 .. num).step(i+1) { |i| prime_bools[i] = false }
+    # puts "removed #{i+1}s #{prime_bools.each_index.select { |i| prime_bools[i] }.map { |j| j+1 }.drop(1)}"
+  end
 
-puts sum
+  # select all the remaining trues from prime_bools
+  prime_bools = prime_bools.each_index.select { |i| prime_bools[i] }
+
+  # map the prime_bools to their index/number and drop the 1 (not a prime)
+  primes = prime_bools.map { |i| i+1 }.drop(1)
+
+end
+
+p primes_up_to(2_000_000).inject(:+)
